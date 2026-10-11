@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Meu Diário Docente</title>
+<style>
+:root{--bg:#f3f4fb;--card:#fff;--line:#e8e9f3;--text:#1e1b3a;--mut:#7a7894;--pri:#6d28f0;--pri2:#efe8ff;--ok:#16a34a;--bad:#e5484d;--gold:#d99a1e;--sh:0 6px 24px #4b3a9a14;box-sizing:border-box}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0b0d;--card:#141417;--line:#26262c;--text:#ececf1;--mut:#9a9aa5;--pri:#8b5cf6;--pri2:#211a38;--ok:#34d399;--gold:#fbbf24;--bad:#f87171;--sh:0 6px 24px #0009}}
+:root[data-theme="dark"]{--bg:#0b0b0d;--card:#141417;--line:#26262c;--text:#ececf1;--mut:#9a9aa5;--pri:#8b5cf6;--pri2:#211a38;--ok:#34d399;--gold:#fbbf24;--bad:#f87171;--sh:0 6px 24px #0009}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer}
+.app{display:grid;grid-template-columns:220px minmax(0,1fr) 290px;gap:18px;max-width:1500px;margin:0 auto;padding:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--sh);padding:18px}
+.side{display:flex;flex-direction:column;gap:6px;position:sticky;top:18px;align-self:start;height:calc(100vh - 36px);overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--pri);font-size:16px;margin-bottom:14px}.brand b{width:34px;height:34px;border-radius:50%;background:var(--pri);color:#fff;display:grid;place-items:center}
+.lbl{font-size:11px;letter-spacing:.08em;color:var(--mut);font-weight:700;margin:14px 0 4px}
+.nb{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;padding:9px 10px;border-radius:10px;color:var(--text);text-align:left;transition:.18s}
+.nb:hover{background:var(--pri2)}.nb.on{color:var(--pri);background:var(--pri2);font-weight:700}.nb.red{color:var(--bad)}
+.main{min-width:0;display:grid;gap:16px;align-content:start}
+.top{display:flex;gap:10px}.top input{flex:1;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px 14px;outline:0}
+.ib{width:46px;border:1px solid var(--line);background:var(--card);border-radius:14px;font-size:18px}
+.sec{display:none;gap:16px;align-content:start}.sec.on{display:grid;animation:up .35s ease both}
+.sec.on>*{animation:up .45s ease both}.sec.on>*:nth-child(2){animation-delay:.06s}.sec.on>*:nth-child(3){animation-delay:.12s}.sec.on>*:nth-child(4){animation-delay:.18s}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(8px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}}@keyframes grow{from{transform:scaleY(0)}}@keyframes fill{from{transform:scaleX(0)}}@keyframes dash{from{stroke-dasharray:0 400}}@keyframes ring{from{stroke-dasharray:0 400}}
+.sh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.sh h2{margin:0;font-size:18px}.sh small{color:var(--mut)}
+.hero{background:linear-gradient(120deg,var(--pri),#9b5cf6);color:#fff;border-radius:20px;padding:26px;position:relative;overflow:hidden}
+.hero small{opacity:.8;letter-spacing:.06em}.hero h1{margin:6px 0 16px;font-size:24px;max-width:420px}.hero i{position:absolute;right:30px;top:20px;font-size:90px;opacity:.25;font-style:normal;animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 12px;font-weight:650;font-size:13px;transition:.18s}.btn:hover{transform:translateY(-2px)}.btn:active{transform:scale(.96)}
+.btn.p{background:var(--pri);border-color:var(--pri);color:#fff}.hero .btn{background:#111;border-color:#111;color:#fff}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.mt{display:flex;align-items:center;gap:12px}.mt .ic{width:40px;height:40px;border-radius:50%;background:var(--pri2);display:grid;place-items:center;color:var(--pri)}
+.mt small{color:var(--mut);display:block}.mt strong{font-size:22px}
+.cc{border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:8px;transition:.18s}.cc:hover{transform:translateY(-3px);border-color:var(--pri)}
+.cl{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-top:12px}
+.tag{display:inline-block;border-radius:99px;padding:3px 9px;font-size:10px;font-weight:700;background:var(--pri2);color:var(--pri);white-space:nowrap}.tag.gold{background:#d99a1e22;color:var(--gold)}.tag.ok{background:#16a34a22;color:var(--ok)}
+.pbar{height:7px;border-radius:99px;background:var(--pri2);overflow:hidden}.pbar i{display:block;height:100%;background:var(--pri);border-radius:99px;transform-origin:left;animation:fill .8s ease both}
+.tw{overflow:auto;margin-top:10px}table{width:100%;border-collapse:collapse}th{font-size:10px;letter-spacing:.06em;color:var(--mut);text-align:left;padding:8px}td{padding:10px 8px;border-top:1px solid var(--line)}td small{display:block;color:var(--mut)}
+.empty{color:var(--mut);padding:14px;text-align:center}
+.bars{display:flex;align-items:flex-end;gap:8px;height:130px;margin-top:14px}.bc{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}.bc small{color:var(--mut);font-size:10px}
+.stk{width:100%;max-width:26px;display:flex;flex-direction:column;border-radius:6px;overflow:hidden;transform-origin:bottom;animation:grow .7s ease both}.stk .p{background:var(--pri)}.stk .a{background:var(--pri2)}
+.don{width:130px;height:130px}.don circle+circle{animation:dash .9s ease both}.lg{display:grid;gap:6px}.lg span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--c);margin-right:8px}
+.row{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.hb{display:grid;grid-template-columns:90px 1fr 60px;gap:10px;align-items:center;margin-top:12px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;margin-top:12px}.cal b{font-size:10px;color:var(--mut)}.cal span{padding:7px 0;border-radius:9px;font-size:12px;position:relative}.cal .t{background:var(--pri);color:#fff}.cal .d:after{content:"";position:absolute;bottom:2px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--gold)}
+.prof{text-align:center;display:flex;flex-direction:column;gap:14px;align-self:start}.rg{width:110px;height:110px;margin:auto;position:relative}.rg svg{width:100%;transform:rotate(-90deg)}.rg circle+circle{animation:ring 1s ease both}.rg span{position:absolute;inset:0;display:grid;place-items:center;font-size:22px;font-weight:800}
+.qa{display:flex;justify-content:center;gap:10px}.qa .ib{width:42px;height:42px;border-radius:50%}
+.ml{display:flex;align-items:center;gap:10px;text-align:left;padding:8px 0;border-top:1px solid var(--line)}.ml div{flex:1;min-width:0}.ml small{color:var(--mut);display:block}
+.att{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-top:12px}.stu{border:1px solid var(--line);background:var(--pri2);border-radius:11px;padding:10px;text-align:left;font-weight:650;font-size:12px;transition:.18s}.stu small{display:block;font-weight:500;color:var(--mut)}.stu.f{background:#e5484d22;border-color:var(--bad)}.stu:active{transform:scale(.95)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.bar select,.bar input,.fm select,.fm input{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 10px;width:auto}
+.mb{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:16px;z-index:10}.mb.open{display:flex;animation:fade .2s}.mb form{background:var(--card);border-radius:20px;padding:22px;width:min(480px,100%);animation:pop .25s both}
+.fm{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.fm label{display:block;font-size:12px;color:var(--mut);margin-bottom:3px}.fm input,.fm select{width:100%}.fm .full{grid-column:1/-1}
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));right:20px;background:var(--pri);color:#fff;border-radius:12px;padding:12px 16px;font-weight:650;display:none;z-index:20}.toast.show{display:block;animation:up .3s both}
+@media(max-width:1100px){.app{grid-template-columns:200px minmax(0,1fr)}.prof{grid-column:1/-1}}
+@media(max-width:760px){.app{grid-template-columns:1fr;padding:12px 12px 90px}.side{position:fixed;top:auto;bottom:0;left:0;right:0;height:auto;flex-direction:row;justify-content:space-around;border-radius:18px 18px 0 0;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:5;overflow:visible}.side .brand,.side .lbl,.side .x{display:none}.nb{flex-direction:column;gap:2px;font-size:10px;padding:6px 2px;text-align:center}.g3{grid-template-columns:1fr}.hero i{display:none}}
+
+/* Ajustes responsivos adicionais */
+body{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+button,input,select{min-height:42px}
+.mobile-nav,.mobile-more{display:none}
+.top{min-width:0}.top input{min-width:0;width:100%}
+.card,.cc,.hero{min-width:0}
+@media(max-width:760px){
+  .app{display:block;width:100%;padding:10px 10px calc(94px + env(safe-area-inset-bottom,0px));}
+  .side{display:none}
+  .main{width:100%;gap:12px}
+  .top{position:sticky;top:calc(env(safe-area-inset-top,0px) + 4px);z-index:4;background:var(--bg);padding:2px 0 8px}
+  .top input{font-size:16px;padding:11px 12px}
+  .ib{min-width:44px;min-height:44px;flex-shrink:0}
+  .sec{gap:12px}
+  .card{padding:14px;border-radius:16px}
+  .hero{padding:20px;border-radius:18px}
+  .hero h1{font-size:22px;line-height:1.25;max-width:100%}
+  .hero i{display:none}
+  .g3{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .g3 .card{padding:11px;gap:8px}
+  .mt{gap:8px;align-items:center}
+  .mt .ic{width:32px;height:32px;flex-shrink:0}
+  .mt strong{font-size:20px;overflow-wrap:anywhere}
+  .mt small{font-size:11px}
+  .g2{grid-template-columns:minmax(0,1fr);gap:12px}
+  .cl{grid-template-columns:minmax(0,1fr);}
+  .sh{align-items:flex-start}
+  .sh h2{font-size:17px}
+  .sh .btn{flex-shrink:0}
+  .bar{align-items:stretch}
+  .bar select,.bar input,.fm select,.fm input{width:100%;min-width:0;flex:1 1 100%;font-size:16px;min-height:44px}
+  .bar .btn{min-height:44px}
+  .fm{grid-template-columns:minmax(0,1fr);gap:12px}
+  .fm .full{grid-column:auto}
+  .mb{align-items:flex-end;padding:8px}
+  .mb form{width:100%;max-height:88dvh;overflow:auto;padding:18px;border-radius:20px 20px 14px 14px}
+  .prof{display:none}
+  .tw{overflow:visible;max-width:100%;margin-top:10px}
+  .tw table,.tw tbody,.tw tr,.tw td{display:block;width:100%}
+  .tw thead{display:none}
+  .tw tr{border:1px solid var(--line);border-radius:13px;padding:8px 11px;margin-bottom:10px;background:var(--card)}
+  .tw td{display:grid;grid-template-columns:minmax(82px,34%) minmax(0,1fr);gap:8px;align-items:start;padding:7px 0;border-top:1px solid var(--line);overflow-wrap:anywhere}
+  .tw td:first-child{border-top:0}
+  .tw td:before{font-size:10px;font-weight:750;letter-spacing:.04em;color:var(--mut);text-transform:uppercase}
+  #evHome td:nth-child(1):before,#evAll td:nth-child(1):before{content:'Compromisso'}
+  #evHome td:nth-child(2):before,#evAll td:nth-child(2):before{content:'Turma'}
+  #evHome td:nth-child(3):before,#evAll td:nth-child(3):before{content:'Data'}
+  #evHome td:nth-child(4):before,#evAll td:nth-child(4):before{content:'Situação'}
+  #clRows td:nth-child(1):before{content:'Turma'}
+  #clRows td:nth-child(2):before{content:'Disciplina'}
+  #clRows td:nth-child(3):before{content:'Período'}
+  #clRows td:nth-child(4):before{content:'Alunos'}
+  #clRows td:nth-child(5):before{content:'Presença'}
+  #acRows td:nth-child(1):before{content:'Atividade'}
+  #acRows td:nth-child(2):before{content:'Turma'}
+  #acRows td:nth-child(3):before{content:'Unidade'}
+  #acRows td:nth-child(4):before{content:'Pontos'}
+  #acRows td:nth-child(5):before{content:'Prazo'}
+  #acRows td:nth-child(6):before{content:'Status'}
+  .tw td[colspan]{display:block;text-align:center}
+  .tw td[colspan]:before{content:none!important}
+  .cal{gap:2px}
+  .cal span{padding:8px 0;font-size:12px}
+  .cal b{font-size:10px}
+  .att{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .stu{min-height:54px;font-size:13px;padding:10px}
+  .hb{grid-template-columns:minmax(72px,1fr) minmax(48px,1.2fr) 42px;gap:7px;font-size:12px}
+  .row{gap:12px}
+  .don{width:112px;height:112px;flex-shrink:0}
+  .mobile-nav{display:flex;position:fixed;z-index:15;left:8px;right:8px;bottom:calc(7px + env(safe-area-inset-bottom,0px));gap:4px;padding:7px 5px;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 28px #0003;justify-content:space-around}
+  .mobile-nav-btn{border:0;background:transparent;color:var(--mut);border-radius:12px;display:flex;flex:1;min-width:0;min-height:52px;align-items:center;justify-content:center;flex-direction:column;gap:2px;padding:4px 2px}
+  .mobile-nav-btn span{font-size:20px;line-height:1.1}
+  .mobile-nav-btn small{font-size:10px;white-space:nowrap}
+  .mobile-nav-btn.on{background:var(--pri2);color:var(--pri);font-weight:750}
+  .mobile-more{display:none;position:fixed;z-index:14;left:12px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom,0px));padding:8px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 28px #0003;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+  .mobile-more.open{display:grid}
+  .mobile-more .nb{min-height:46px;padding:8px;font-size:12px;gap:7px}
+  .toast{left:12px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom,0px));text-align:center}
+}
+@media(max-width:380px){
+  .app{padding-left:8px;padding-right:8px}
+  .g3 .card{padding:9px}
+  .mt .ic{display:none}
+  .hb{grid-template-columns:70px minmax(40px,1fr) 38px;gap:5px}
+  .tw td{grid-template-columns:78px minmax(0,1fr)}
+}
+
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* Recursos v2 */
+#p-entregas .bar select{flex:1 1 160px}
+.status-select,.grade-input{width:100%;min-width:100px;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:7px}
+.grade-input{min-width:70px}
+.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.settings-grid label{display:block;color:var(--mut);font-size:12px;margin-bottom:5px}
+.settings-grid input,.settings-grid select,.settings-grid textarea{width:100%;min-width:0;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;padding:10px}
+.help{border:1px solid var(--line);border-radius:12px;padding:12px;color:var(--mut);font-size:12px;overflow-wrap:anywhere}
+.pillrow{display:flex;gap:8px;flex-wrap:wrap}
+@media(max-width:760px){.settings-grid{grid-template-columns:1fr}#p-entregas .bar>*{flex:1 1 100%}}
+.lv{background:color-mix(in srgb,var(--lc) 16%,transparent);color:var(--lc);border:1px solid var(--lc);font-weight:700;border-radius:10px;padding:6px 8px;transition:.25s}
+.chip{display:inline-block;border-radius:99px;padding:3px 10px;font-size:11px;font-weight:700;background:color-mix(in srgb,var(--lc) 16%,transparent);color:var(--lc);transition:.25s;white-space:nowrap}
+.cbar{display:flex;align-items:center;gap:8px;min-width:110px}.cbar .pbar{flex:1;background:color-mix(in srgb,var(--lc) 18%,transparent)}.cbar .pbar i{background:var(--lc)}.cbar b{font-size:11px;color:var(--lc)}
+.mb{z-index:30}.toast{z-index:40}
+.mb form{max-height:88dvh;overflow:auto;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
+.mb form>.bar:last-child{position:sticky;bottom:0;background:var(--card);padding:10px 0 4px;margin-top:4px;border-top:1px solid var(--line)}
+.ic2{display:inline-flex;align-items:center;justify-content:center;line-height:0;flex:none}
+.ic2 svg{width:1.2em;height:1.2em;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px}.ib{display:inline-grid;place-items:center}
+.nb .ic2 svg{width:20px;height:20px}.mt .ic{display:grid;place-items:center}.mt .ic .ic2 svg{width:20px;height:20px}
+.hero i svg{width:1em;height:1em;stroke-width:.9}
+.mobile-nav-btn .ic2 svg{width:22px;height:22px}.qa .ib .ic2 svg,.ib .ic2 svg{width:20px;height:20px}
+.main{touch-action:pan-y}.swn.sec.on{animation:none!important}.sec{will-change:auto}
+#swHint{position:fixed;top:42%;z-index:25;width:64px;height:64px;border-radius:50%;background:var(--card);border:1px solid var(--line);box-shadow:var(--sh);display:grid;place-items:center;opacity:0;pointer-events:none;color:var(--mut);transition:opacity .15s,background .2s,color .2s}
+#swHint.r{right:10px}#swHint.l{left:10px}
+#swHint .rg2{position:absolute;inset:-1px;width:calc(100% + 2px);height:calc(100% + 2px);transform:rotate(-90deg)}
+#swHint circle{fill:none;stroke:var(--line);stroke-width:2.5}#swHint .pg{stroke:var(--pri);stroke-linecap:round;stroke-dasharray:119.4;stroke-dashoffset:119.4}
+#swHint small{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;white-space:nowrap;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:2px 8px}
+#swHint .ic2 svg{width:24px;height:24px}#swHint.ready{background:var(--pri);color:#fff;border-color:var(--pri)}
+.mobile-nav-btn{transition:transform .2s,color .2s,background .2s}.mobile-nav-btn.peek{transform:translateY(-5px) scale(1.1);color:var(--pri)}
+html,body{touch-action:pan-y}
+@media(max-width:760px){.main{min-height:80dvh}}
+</style></head><body>
+<div class="app">
+<aside class="side card"><div class="brand"><b><span class="ic2" data-i="sparkle"></span></b>Diário Docente</div>
+<div class="lbl">VISÃO GERAL</div><div id="nav">
+<button class="nb on" data-p="inicio"><span class="ic2" data-i="home"></span><span>Início</span></button><button class="nb" data-p="agenda"><span class="ic2" data-i="calendar"></span><span>Agenda</span></button><button class="nb" data-p="turmas"><span class="ic2" data-i="users"></span><span>Turmas</span></button><button class="nb" data-p="frequencia"><span class="ic2" data-i="check"></span><span>Frequência</span></button><button class="nb" data-p="atividades"><span class="ic2" data-i="clipboard"></span><span>Atividades</span></button><button class="nb" data-p="notas"><span class="ic2" data-i="chart"></span><span>Notas</span></button>
+<button class="nb" data-p="entregas"><span class="ic2" data-i="filecheck"></span><span>Entregas e notas</span></button>
+<button class="nb" data-p="lembretes"><span class="ic2" data-i="bell"></span><span>Lembretes</span></button>
+<button class="nb" data-p="config"><span class="ic2" data-i="sliders"></span><span>Configurações</span></button></div>
+<div class="x"><div class="lbl">MINHAS TURMAS</div><div id="sideC"></div><div class="lbl">CONFIGURAÇÕES</div>
+<button class="nb" onclick="exportBackup()"><span class="ic2" data-i="download"></span>Backup</button><button class="nb" onclick="$('imp').click()"><span class="ic2" data-i="upload"></span>Importar</button><input type="file" id="imp" accept=".json" hidden onchange="importBackup(event)"></div></aside>
+<div class="mobile-more" id="mobileMore" aria-label="Mais opções">
+<button class="nb" data-p="frequencia"><span class="ic2" data-i="check"></span><span>Frequência</span></button>
+<button class="nb" data-p="atividades"><span class="ic2" data-i="clipboard"></span><span>Atividades</span></button>
+<button class="nb" data-p="notas"><span class="ic2" data-i="chart"></span><span>Notas</span></button>
+<button class="nb" data-p="entregas"><span class="ic2" data-i="filecheck"></span><span>Entregas e notas</span></button>
+<button class="nb" data-p="lembretes"><span class="ic2" data-i="bell"></span><span>Lembretes</span></button>
+<button class="nb" data-p="config"><span class="ic2" data-i="sliders"></span><span>Configurações</span></button>
+<button class="nb" onclick="exportBackup()"><span class="ic2" data-i="download"></span><span>Baixar backup</span></button>
+<button class="nb" onclick="$('imp').click()"><span class="ic2" data-i="upload"></span><span>Importar backup</span></button>
+</div>
+<main class="main"><div class="top"><input id="q" placeholder="Buscar turma, atividade ou compromisso..." oninput="renderAll()"><button class="ib" id="th" title="Modo claro/escuro" onclick="toggleTheme()"><span class="ic2" data-i="moon"></span></button></div>
+<section class="sec on" id="p-inicio"><div class="hero"><small>ESPAÇO DE TRABALHO</small><h1>Bom trabalho, professor. Pronto para a chamada de hoje?</h1><button class="btn" onclick="go('frequencia')">Registrar chamada <span class="ic2" data-i="arrow"></span></button><i><span class="ic2" data-i="sparkle"></span></i></div>
+<div class="g3"><div class="card mt"><span class="ic"><span class="ic2" data-i="users"></span></span><div><small>Turmas ativas</small><strong class="num" id="m1">0</strong></div></div><div class="card mt"><span class="ic"><span class="ic2" data-i="calendar"></span></span><div><small>Atividades próximas</small><strong class="num" id="m2">0</strong></div></div><div class="card mt"><span class="ic"><span class="ic2" data-i="alert"></span></span><div><small>Pendências</small><strong class="num" id="m3">0</strong></div></div></div>
+<div class="card"><div class="sh"><h2>Continuar de onde parou</h2><button class="btn" onclick="go('turmas')">Ver todas</button></div><div class="cl" id="cont"></div></div>
+<div class="card"><div class="sh"><h2>Próximos compromissos</h2><button class="btn" onclick="go('agenda')">Ver todos</button></div><div class="tw"><table><thead><tr><th>COMPROMISSO</th><th>TURMA</th><th>DATA</th><th>SITUAÇÃO</th></tr></thead><tbody id="evHome"></tbody></table></div></div></section>
+<section class="sec" id="p-agenda"><div class="sh"><h2>Agenda</h2><button class="btn p" onclick="openModal('event')"><span class="ic2" data-i="plus"></span>Novo evento</button></div><div class="g2"><div class="card"><h2 style="margin:0;font-size:16px" id="calT"></h2><div class="cal" id="cal"></div></div><div class="card"><div class="tw"><table><thead><tr><th>COMPROMISSO</th><th>TURMA</th><th>DATA</th><th>SITUAÇÃO</th></tr></thead><tbody id="evAll"></tbody></table></div></div></div></section>
+<section class="sec" id="p-turmas"><div class="sh"><h2>Turmas</h2><button class="btn p" onclick="openModal('class')"><span class="ic2" data-i="plus"></span>Nova turma</button></div><div class="card"><div class="tw"><table><thead><tr><th>TURMA</th><th>DISCIPLINA</th><th>PERÍODO</th><th>ALUNOS</th><th>PRESENÇA</th><th>AÇÕES</th></tr></thead><tbody id="clRows"></tbody></table></div></div></section>
+<section class="sec" id="p-frequencia"><div class="sh"><h2>Frequência</h2><small>Toque no aluno para marcar falta</small></div><div class="card"><div class="bar"><select id="aC" onchange="renderAtt()"></select><input type="date" id="aD" onchange="renderAtt()"><button class="btn" onclick="attDraft.clear();renderAtt()">Todos presentes</button><button class="btn p" onclick="saveAtt()">Salvar chamada</button></div><div class="att" id="aL"></div><p id="aS" style="color:var(--mut)"></p></div>
+<div class="card"><div class="sh"><h2>Presença por turma</h2></div><div id="aH"></div></div></section>
+<section class="sec" id="p-atividades"><div class="sh"><h2>Atividades</h2><button class="btn p" onclick="openModal('activity')"><span class="ic2" data-i="plus"></span>Nova atividade</button></div><div class="card row"><div id="dn"></div><div class="lg" id="dl"></div></div><div class="card"><div class="tw"><table><thead><tr><th>ATIVIDADE</th><th>TURMA</th><th>UNIDADE</th><th>PONTOS</th><th>PRAZO</th><th>CONCLUSÃO</th><th>STATUS</th></tr></thead><tbody id="acRows"></tbody></table></div></div></section>
+<section class="sec" id="p-notas"><div class="sh"><h2>Notas e unidades</h2><small>Notas calculadas automaticamente pelo nível de conclusão</small></div><div class="card" id="nt"></div></section>
+
+<section class="sec" id="p-entregas">
+ <div class="sh"><h2>Entregas e notas por aluno</h2><button class="btn p" onclick="exportGradesCSV()"><span class="ic2" data-i="download"></span>Exportar CSV</button></div>
+ <div class="card">
+  <p style="color:var(--mut);margin-top:0">Registre manualmente se cada aluno entregou a atividade e sua nota. Os dados são salvos neste dispositivo ou sincronizados quando o Supabase estiver configurado.</p>
+  <div class="bar"><select id="subClass" onchange="renderSubmissions()"></select><select id="subActivity" onchange="renderSubmissions()"></select><input id="subSearch" placeholder="Buscar aluno..." oninput="renderSubmissions()"></div>
+  <div class="tw"><table><thead><tr><th>ALUNO</th><th>ENTREGA</th><th>NOTA</th><th>OBSERVAÇÃO</th></tr></thead><tbody id="subRows"></tbody></table></div>
+  <div class="bar"><button class="btn" onclick="addStudent()"><span class="ic2" data-i="plus"></span>Adicionar aluno à turma</button><button class="btn" onclick="saveSubmissions()">Salvar alterações</button></div>
+ </div>
+ <div class="card"><div class="sh"><h2>Resumo da atividade</h2></div><div id="subSummary"></div></div>
+</section>
+<section class="sec" id="p-lembretes">
+ <div class="sh"><h2>Lembretes e calendário</h2><button class="btn p" onclick="openModal('event')"><span class="ic2" data-i="plus"></span>Novo lembrete</button></div>
+ <div class="card"><p style="color:var(--mut);margin-top:0">Os lembretes aparecem na agenda. Você pode ativar notificações do navegador enquanto esta página estiver aberta e exportar compromissos para o calendário.</p>
+ <div class="pillrow"><button class="btn p" onclick="enableNotifications()">Ativar notificações</button><button class="btn" onclick="exportCalendar()">Exportar agenda (.ics)</button><button class="btn" onclick="scheduleReminders()">Verificar prazos agora</button></div>
+ <div id="reminderList" style="margin-top:14px"></div></div>
+ <div class="card"><h3 style="margin-top:0">Avisos sobre limitações</h3><p style="color:var(--mut)">Notificações push confiáveis mesmo com o navegador fechado exigem publicação como PWA e configuração de serviço de notificações. O HTML sozinho não garante esse comportamento. A exportação .ics pode ser importada no calendário do celular/computador.</p></div>
+</section>
+<section class="sec" id="p-config">
+ <div class="sh"><h2>Configurações e sincronização</h2></div>
+ <div class="card"><h3 style="margin-top:0">Conta e banco de dados na nuvem</h3>
+  <p style="color:var(--mut)">Configure um projeto Supabase para ter login e sincronização entre dispositivos. Os campos abaixo guardam a URL e a chave pública (anon/publishable) neste navegador. Nunca coloque uma chave secreta/service_role no HTML.</p>
+  <div class="settings-grid">
+   <div><label for="sbUrl">URL do projeto Supabase</label><input id="sbUrl" type="url" placeholder="https://seu-projeto.supabase.co"></div>
+   <div><label for="sbKey">Chave pública anon/publishable</label><input id="sbKey" type="password" placeholder="Chave pública do projeto"></div>
+   <div><label for="sbEmail">E-mail</label><input id="sbEmail" type="email" placeholder="voce@exemplo.com"></div>
+   <div><label for="sbPassword">Senha</label><input id="sbPassword" type="password" placeholder="Mínimo 6 caracteres"></div>
+  </div>
+  <div class="bar" style="margin-top:12px"><button class="btn p" onclick="saveCloudConfig()">Salvar configuração</button><button class="btn" onclick="cloudSignUp()">Criar conta</button><button class="btn" onclick="cloudSignIn()">Entrar</button><button class="btn" onclick="cloudSignOut()">Sair</button><button class="btn" onclick="syncCloud()">Sincronizar agora</button></div>
+  <p id="cloudStatus" role="status" style="color:var(--mut)">Nuvem não configurada.</p>
+ </div>
+ <div class="card"><h3 style="margin-top:0">Configuração obrigatória no Supabase</h3>
+  <p>Depois de criar o projeto, abra o SQL Editor do Supabase e execute o SQL abaixo. Ele cria uma tabela privada por usuário e ativa políticas de segurança (RLS).</p>
+  <pre style="white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg);padding:12px;border-radius:10px;font-size:12px" id="sqlSetup">create table if not exists public.diario_docente_data (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  payload jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now()
+);
+alter table public.diario_docente_data enable row level security;
+create policy "Cada usuário acessa seus próprios dados"
+on public.diario_docente_data for all
+using (auth.uid() = user_id)
+with check (auth.uid() = user_id);
+grant select, insert, update, delete on public.diario_docente_data to authenticated;</pre>
+  <button class="btn" onclick="copySql()">Copiar SQL de configuração</button>
+  <div class="help" style="margin-top:12px">Importante: para acesso remoto, hospede este arquivo em HTTPS, configure o Supabase Auth e teste as políticas. O HTML não cria sozinho um projeto Supabase. A chave pública pode ficar no front-end somente com RLS corretamente configurado.</div>
+ </div>
+ <div class="card"><h3 style="margin-top:0">Backup e dados</h3><div class="bar"><button class="btn" onclick="exportBackup()"><span class="ic2" data-i="download"></span>Baixar backup JSON</button><button class="btn" onclick="$('imp').click()"><span class="ic2" data-i="upload"></span>Importar backup JSON</button><button class="btn" onclick="resetDemoData()">Limpar dados de exemplo</button></div><p style="color:var(--mut)">Faça backup antes de trocar de navegador ou aparelho. Os dados locais não sincronizam automaticamente sem a configuração da nuvem.</p></div>
+</section>
+</main>
+<aside class="prof card"><div class="rg"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" style="stroke:var(--pri2)" stroke-width="8"/><circle id="rc" cx="50" cy="50" r="42" fill="none" style="stroke:var(--pri)" stroke-width="8" stroke-linecap="round"/></svg><span id="rt">0%</span></div>
+<div><strong>Olá, professor!</strong><div style="color:var(--mut);font-size:12px">Presença média geral</div></div>
+<div class="qa"><button class="ib" title="Novo evento" onclick="openModal('event')"><span class="ic2" data-i="calendarplus"></span></button><button class="ib" title="Nova turma" onclick="openModal('class')"><span class="ic2" data-i="userplus"></span></button><button class="ib" title="Chamada" onclick="go('frequencia')"><span class="ic2" data-i="check"></span></button></div>
+<div style="text-align:left"><strong>Frequência dos últimos dias</strong><div id="pb"></div></div>
+<div style="text-align:left"><strong>Minhas turmas</strong><div id="pl"></div></div></aside></div>
+<nav class="mobile-nav" id="mobileNav" aria-label="Navegação principal">
+<button class="mobile-nav-btn on" data-p="inicio"><span><span class="ic2" data-i="home"></span></span><small>Início</small></button>
+<button class="mobile-nav-btn" data-p="agenda"><span><span class="ic2" data-i="calendar"></span></span><small>Agenda</small></button>
+<button class="mobile-nav-btn" data-p="turmas"><span><span class="ic2" data-i="users"></span></span><small>Turmas</small></button>
+<button class="mobile-nav-btn" id="moreToggle" type="button"><span><span class="ic2" data-i="menu"></span></span><small>Mais</small></button>
+</nav>
+<div class="mb" id="mb"><form onsubmit="saveRec(event)"><h2 id="mT" style="margin:0"></h2><div class="fm" id="mF"></div><div class="bar" style="justify-content:flex-end"><button type="button" class="btn" onclick="closeModal()">Cancelar</button><button class="btn p" id="mS">Salvar</button></div></form></div><div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const iso=d=>{const x=new Date(d);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
+function shiftDate(n){const d=new Date();d.setDate(d.getDate()+n);return iso(d)}
+const fmtDate=s=>s?new Date(s+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}):'—';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let classes=[{id:1,name:'Turma 1º A',subject:'Língua Portuguesa',period:'Manhã',students:32},{id:2,name:'Turma 2º B',subject:'Produção Textual',period:'Tarde',students:28},{id:3,name:'Turma 3º A',subject:'Língua Portuguesa',period:'Manhã',students:30}];
+let events=[{id:1,title:'Aplicação de atividade diagnóstica',type:'Aplicação',className:'Turma 1º A',date:shiftDate(2),time:'08:00',status:'Planejado'},{id:2,title:'Recolhimento: produção textual',type:'Recolhimento',className:'Turma 2º B',date:shiftDate(3),time:'14:00',status:'Prazo próximo'},{id:3,title:'Planejamento semanal',type:'Reunião',className:'Pessoal',date:shiftDate(5),time:'16:30',status:'Planejado'}];
+let activities=[{id:1,title:'Atividade diagnóstica',className:'Turma 1º A',unit:'Unidade 1',points:2,date:shiftDate(2),status:'Aguardando'},{id:2,title:'Produção textual',className:'Turma 2º B',unit:'Unidade 1',points:3,date:shiftDate(3),status:'Em andamento'},{id:3,title:'Leitura orientada',className:'Turma 3º A',unit:'Unidade 2',points:2,date:shiftDate(-1),status:'Recolhida'}];
+let attendance={};[[1,[2,4,1,3,2]],[2,[1,3,2,2,4]]].forEach(([id,a])=>a.forEach((n,i)=>attendance[id+'|'+shiftDate(i-5)]={absent:Array.from({length:n},(_,j)=>j),total:id==1?32:28}));
+let students={}, submissions={}, reminders=[];
+classes.forEach(c=>{students[c.id]=Array.from({length:Number(c.students)||0},(_,i)=>({id:String(c.id)+'-'+(i+1),name:'Aluno '+String(i+1).padStart(2,'0')}))});
+let cloudClient=null, cloudUser=null;
+try{const s=JSON.parse(localStorage.getItem('diarioDocenteDemo')||'null');if(s){classes=s.classes||classes;events=s.events||events;activities=s.activities||activities;attendance=s.attendance||attendance;students=s.students||students;submissions=s.submissions||submissions;reminders=s.reminders||reminders}}catch(e){}
+function appPayload(){return {classes,events,activities,attendance,students,submissions,reminders}}
+function persist(){try{localStorage.setItem('diarioDocenteDemo',JSON.stringify(appPayload()))}catch(e){}}
+
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
+/* tema */
+const ICONS={"home": "<path d=\"M3 11l9-8 9 8\"/><path d=\"M5 10v10h5v-6h4v6h5V10\"/>", "calendar": "<rect x=\"3\" y=\"4\" width=\"18\" height=\"17\" rx=\"3\"/><path d=\"M8 2v4M16 2v4M3 10h18\"/>", "calendarplus": "<rect x=\"3\" y=\"4\" width=\"18\" height=\"17\" rx=\"3\"/><path d=\"M8 2v4M16 2v4M3 10h18M12 13v5M9.5 15.5h5\"/>", "users": "<circle cx=\"9\" cy=\"8\" r=\"3.5\"/><path d=\"M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6\"/><path d=\"M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.4c2.2.7 3.5 2.6 3.5 5.6\"/>", "userplus": "<circle cx=\"9\" cy=\"8\" r=\"3.5\"/><path d=\"M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M19 8v6M16 11h6\"/>", "check": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m8 12.5 2.8 2.8L16 9.5\"/>", "clipboard": "<rect x=\"5\" y=\"4\" width=\"14\" height=\"17\" rx=\"2.5\"/><path d=\"M9 4a3 3 0 0 1 6 0v1H9z\"/><path d=\"M9 11h6M9 15h4\"/>", "chart": "<rect x=\"4\" y=\"11\" width=\"4\" height=\"9\" rx=\"1\"/><rect x=\"10\" y=\"4\" width=\"4\" height=\"16\" rx=\"1\"/><rect x=\"16\" y=\"14\" width=\"4\" height=\"6\" rx=\"1\"/>", "filecheck": "<path d=\"M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z\"/><path d=\"M14 3v5h5M9 15l2 2 4-4\"/>", "bell": "<path d=\"M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z\"/><path d=\"M10 21h4\"/>", "sliders": "<path d=\"M4 7h10M18 7h2M4 17h2M10 17h10\"/><circle cx=\"16\" cy=\"7\" r=\"2\"/><circle cx=\"8\" cy=\"17\" r=\"2\"/>", "download": "<path d=\"M12 4v11m0 0-4-4m4 4 4-4M5 20h14\"/>", "upload": "<path d=\"M12 16V5m0 0-4 4m4-4 4 4M5 20h14\"/>", "plus": "<path d=\"M12 5v14M5 12h14\"/>", "arrow": "<path d=\"M5 12h14m0 0-5-5m5 5-5 5\"/>", "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/>", "moon": "<path d=\"M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z\"/>", "menu": "<path d=\"M4 7h16M4 12h16M4 17h10\"/>", "edit": "<path d=\"M4 20h4L19 9l-4-4L4 16z\"/><path d=\"m13.5 6.5 4 4\"/>", "trash": "<path d=\"M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3\"/>", "sparkle": "<path d=\"M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z\"/><path d=\"M19 17v4M17 19h4\"/>", "alert": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v6M12 16.5v.5\"/>"};
+const svgI=n=>`<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]||''}</svg>`;
+const ico=n=>`<span class="ic2">${svgI(n)}</span>`;
+function applyIcons(){document.querySelectorAll('[data-i]').forEach(e=>{if(!e.firstChild)e.innerHTML=svgI(e.dataset.i)})}
+function eff(){return document.documentElement.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function setTheme(t){document.documentElement.dataset.theme=t;$('th').innerHTML=ico(t==='dark'?'sun':'moon');try{localStorage.setItem('diarioTema',t)}catch(e){}}
+function toggleTheme(){setTheme(eff()==='dark'?'light':'dark')}
+try{const t=localStorage.getItem('diarioTema');if(t)document.documentElement.dataset.theme=t}catch(e){}
+$('th').innerHTML=ico(eff()==='dark'?'sun':'moon');
+/* navegação */
+function go(p){document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('on',s.id==='p-'+p));document.querySelectorAll('#nav .nb').forEach(b=>b.classList.toggle('on',b.dataset.p===p));document.querySelectorAll('.mobile-nav-btn[data-p]').forEach(b=>b.classList.toggle('on',b.dataset.p===p));$('mobileMore').classList.remove('open');renderAll();window.scrollTo(0,0);if(p==='inicio')counters()}
+$('mobileNav').addEventListener('click',e=>{const b=e.target.closest('[data-p]');if(b){go(b.dataset.p);return}if(e.target.closest('#moreToggle'))$('mobileMore').classList.toggle('open')});
+$('mobileMore').addEventListener('click',e=>{const b=e.target.closest('[data-p]');if(b)go(b.dataset.p)});
+document.addEventListener('click',e=>{if(!$('mobileMore').contains(e.target)&&!e.target.closest('#moreToggle'))$('mobileMore').classList.remove('open')});
+$('nav').addEventListener('click',e=>{const b=e.target.closest('.nb');if(b)go(b.dataset.p)});
+const Q=()=>($('q').value||'').toLowerCase();
+function presPct(c){const ks=Object.keys(attendance).filter(k=>k.split('|')[0]==String(c.id));if(!ks.length)return null;return Math.round(ks.reduce((t,k)=>{const r=attendance[k];return t+(r.total?(r.total-r.absent.length)/r.total:0)},0)/ks.length*100)}
+const pb=v=>`<div class="pbar"><i style="width:${v}%"></i></div>`;
+/* gráficos */
+function stack(){const by={};Object.keys(attendance).forEach(k=>{const d=k.split('|')[1],r=attendance[k];by[d]=by[d]||{p:0,a:0};by[d].p+=r.total-r.absent.length;by[d].a+=r.absent.length});const ds=Object.keys(by).sort().slice(-7);if(!ds.length)return'<div class="empty">Faça uma chamada para ver o gráfico.</div>';const mx=Math.max(...ds.map(d=>by[d].p+by[d].a));return'<div class="bars">'+ds.map(d=>`<div class="bc"><div class="stk" style="height:${(by[d].p+by[d].a)/mx*100}%"><i class="a" style="flex:${by[d].a}"></i><i class="p" style="flex:${by[d].p}"></i></div><small>${fmtDate(d).split(' ')[0]}</small></div>`).join('')+'</div>'}
+function donut(it){const C=2*Math.PI*40,t=it.reduce((a,b)=>a+b.v,0);if(!t)return'<div class="empty">Sem dados.</div>';let o=0;return`<svg viewBox="0 0 100 100" class="don"><circle cx="50" cy="50" r="40" fill="none" style="stroke:var(--pri2)" stroke-width="14"/>`+it.map(i=>{const l=i.v/t*C,c=`<circle cx="50" cy="50" r="40" fill="none" style="stroke:${i.c}" stroke-width="14" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-o}" transform="rotate(-90 50 50)"/>`;o+=l;return c}).join('')+`<text x="50" y="55" text-anchor="middle" font-size="16" font-weight="700" style="fill:var(--text)">${t}</text></svg>`}
+/* renders */
+function evRows(a){return a.length?a.slice().sort((x,y)=>x.date.localeCompare(y.date)).map(e=>`<tr><td><strong>${esc(e.title)}</strong><small>${esc(e.time||'Sem horário')} · ${esc(e.type)}</small></td><td>${esc(e.className)}</td><td>${fmtDate(e.date)}</td><td><span class="tag ${e.status==='Prazo próximo'?'gold':e.status==='Concluído'?'ok':''}">${esc(e.status)}</span></td></tr>`).join(''):'<tr><td colspan="4" class="empty">Nenhum compromisso.</td></tr>'}
+function renderEvents(){const a=events.filter(e=>(e.title+e.className+e.type).toLowerCase().includes(Q()));$('evHome').innerHTML=evRows(a.slice().sort((x,y)=>x.date.localeCompare(y.date)).slice(0,5));$('evAll').innerHTML=evRows(a);
+const n=new Date(),y=n.getFullYear(),m=n.getMonth(),f=new Date(y,m,1).getDay(),dm=new Date(y,m+1,0).getDate();$('calT').textContent=n.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+const has=new Set(events.map(e=>e.date));let h='DSTQQSS'.split('').map(c=>`<b>${c}</b>`).join('')+'<span></span>'.repeat(f);for(let d=1;d<=dm;d++){const k=iso(new Date(y,m,d));h+=`<span class="${k===iso(n)?'t':''} ${has.has(k)?'d':''}">${d}</span>`}$('cal').innerHTML=h}
+function renderClasses(){const a=classes.filter(c=>(c.name+c.subject).toLowerCase().includes(Q()));$('clRows').innerHTML=a.length?a.map(c=>{const p=presPct(c);return`<tr><td><strong>${esc(c.name)}</strong></td><td>${esc(c.subject)}</td><td>${esc(c.period)}</td><td>${c.students}</td><td>${p===null?'—':p+'%'}</td><td style="white-space:nowrap"><button class="btn" onclick="openModal('class','${c.id}')">${ico('edit')} Editar</button> <button class="btn" style="color:var(--bad)" onclick="askDeleteClass('${c.id}')">${ico('trash')} Excluir</button></td></tr>`}).join(''):'<tr><td colspan="6" class="empty">Nenhuma turma.</td></tr>';
+$('cont').innerHTML=a.length?a.map(c=>{const l=activities.filter(x=>x.className===c.name),pr=l.length?Math.round(l.filter(x=>x.status==='Recolhida').length/l.length*100):0,p=presPct(c);return`<div class="cc" style="cursor:pointer" onclick="openAtt('${c.id}')"><span class="tag">${esc(c.subject)}</span><strong>${esc(c.name)}</strong>${pb(pr)}<small style="color:var(--mut)">${pr}% das atividades recolhidas · presença ${p===null?'—':p+'%'}</small></div>`}).join(''):'<div class="empty">Cadastre uma turma.</div>';
+$('sideC').innerHTML=classes.map(c=>`<button class="nb" onclick="openAtt('${c.id}')">${ico('users')}<span>${esc(c.name)}</span></button>`).join('');
+const ps=classes.map(presPct).filter(v=>v!==null),av=ps.length?Math.round(ps.reduce((a,b)=>a+b,0)/ps.length):0,C=2*Math.PI*42;$('rc').setAttribute('stroke-dasharray',`${av/100*C} ${C}`);$('rt').textContent=av+'%';
+$('pb').innerHTML=stack();$('pl').innerHTML=classes.map(c=>{const p=presPct(c);return`<div class="ml"><div><strong>${esc(c.name)}</strong><small>${p===null?'sem chamadas':p+'% de presença'}</small></div><button class="btn" onclick="openAtt('${c.id}')">Abrir</button></div>`}).join('');
+$('m1').textContent=classes.length}
+function renderActivities(){const a=activities.filter(x=>(x.title+x.className).toLowerCase().includes(Q()));const st=[['Aguardando','var(--gold)'],['Em andamento','var(--pri)'],['Recolhida','var(--ok)']];
+$('acRows').innerHTML=a.length?a.map(x=>`<tr><td><strong>${esc(x.title)}</strong></td><td>${esc(x.className)}</td><td>${esc(x.unit)}</td><td>${Number(x.points).toLocaleString('pt-BR')} pts</td><td>${fmtDate(x.date)}</td><td>${(()=>{const p=actStats(x);return`<div class="cbar" style="--lc:${pctColor(p)}"><div class="pbar"><i style="width:${p}%"></i></div><b>${p}%</b></div>`})()}</td><td><span class="tag ${x.status==='Recolhida'?'ok':'gold'}">${esc(x.status)}</span></td></tr>`).join(''):'<tr><td colspan="7" class="empty">Nenhuma atividade.</td></tr>';
+$('dn').innerHTML=donut(st.map(([s,c])=>({v:activities.filter(x=>x.status===s).length,c})));$('dl').innerHTML=st.map(([s,c])=>`<span style="--c:${c}">${s}: ${activities.filter(x=>x.status===s).length}</span>`).join('');
+{const t={};Object.values(submissions).forEach(r=>Object.values(r).forEach(x=>{const n=lvNorm(x.status);t[n]=(t[n]||0)+1}));const L=LVS.slice(1);$('dn').innerHTML=donut(L.map(l=>({v:t[l[0]]||0,c:l[2]})));$('dl').innerHTML='<strong>Níveis de conclusão</strong>'+L.map(l=>`<span style="--c:${l[2]}">${l[0]}: ${t[l[0]]||0}</span>`).join('')}
+$('m2').textContent=activities.filter(x=>x.status!=='Recolhida').length;$('m3').textContent=activities.filter(x=>x.status!=='Recolhida'&&x.date<iso(new Date())).length;
+renderNotas()}
+let attDraft=new Set(),attKeyD='';const aK=()=>$('aC').value+'|'+$('aD').value;
+function renderAtt(){const s=$('aC'),cur=s.value;s.innerHTML=classes.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');if(classes.some(c=>String(c.id)===cur))s.value=cur;if(!$('aD').value)$('aD').value=iso(new Date());
+const c=classes.find(x=>String(x.id)===s.value);if(!c){$('aL').innerHTML='<div class="empty">Cadastre uma turma.</div>';$('aS').textContent=''}else{const k=aK();if(attKeyD!==k){attKeyD=k;attDraft=new Set((attendance[k]&&attendance[k].absent)||[])}const n=Number(c.students)||0;
+$('aL').innerHTML=Array.from({length:n},(_,i)=>`<button type="button" class="stu ${attDraft.has(i)?'f':''}" data-i="${i}">Aluno ${String(i+1).padStart(2,'0')}<small>${attDraft.has(i)?'Faltou':'Presente'}</small></button>`).join('');const p=n-attDraft.size;$('aS').textContent=`${p} presentes · ${attDraft.size} faltas · ${n?Math.round(p/n*100):0}%${attendance[k]?' · chamada salva':''}`}
+$('aH').innerHTML=classes.map(c=>{const p=presPct(c);return`<div class="hb"><span>${esc(c.name)}</span>${pb(p||0)}<b>${p===null?'—':p+'%'}</b></div>`}).join('')}
+$('aL').addEventListener('click',e=>{const b=e.target.closest('.stu');if(!b)return;const i=+b.dataset.i;attDraft.has(i)?attDraft.delete(i):attDraft.add(i);renderAtt()});
+function saveAtt(){const c=classes.find(x=>String(x.id)===$('aC').value);if(!c)return;attendance[aK()]={absent:[...attDraft].sort((a,b)=>a-b),total:Number(c.students)||0};persist();renderAll();toast('Chamada salva.')}
+function openAtt(id){go('frequencia');$('aC').value=id;renderAtt()}
+function renderAll(){renderEvents();renderClasses();renderActivities();renderAtt();if(typeof renderSubmissions==='function')renderSubmissions();if(typeof renderReminders==='function')renderReminders()}
+function counters(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;document.querySelectorAll('.num').forEach(el=>{const v=parseInt(el.textContent);if(!(v>0))return;const t0=performance.now();(function f(t){const p=Math.min((t-t0)/700,1);el.textContent=p<1?Math.round(v*(1-Math.pow(1-p,3))):v;if(p<1)requestAnimationFrame(f)})(t0)})}
+/* modal */
+let cur='';const fld=(n,l,t='text',o=[],full=false,r=true)=>`<div class="${full?'full':''}"><label>${l}</label>${t==='select'?`<select name="${n}">${o.map(x=>`<option>${esc(x)}</option>`).join('')}</select>`:`<input name="${n}" type="${t}" ${r?'required':''} ${t==='number'?'min="0" step="0.25"':''}>`}</div>`;
+let editId=null;
+function openModal(t,id){cur=t;editId=id==null?null:id;$('mT').textContent={event:'Novo compromisso',class:'Cadastrar turma',activity:'Criar atividade'}[t];let f='';
+if(t==='event')f=fld('title','Nome','text',[],true)+fld('type','Tipo','select',['Aula','Aplicação','Recolhimento','Reunião','Outro'])+fld('className','Turma ou contexto')+fld('date','Data','date')+fld('time','Horário','time',[],false,false)+fld('status','Situação','select',['Planejado','Prazo próximo','Concluído']);
+if(t==='class')f=fld('name','Nome da turma')+fld('subject','Disciplina')+fld('period','Período','select',['Manhã','Tarde','Noite','Integral'])+fld('students','Alunos','number');
+if(t==='activity')f=fld('title','Nome da atividade','text',[],true)+fld('className','Turma','select',classes.length?classes.map(c=>c.name):['Cadastre uma turma'])+fld('unit','Unidade')+fld('points','Pontos','number')+fld('date','Recolhimento','date')+fld('status','Status','select',['Aguardando','Em andamento','Recolhida']);
+$('mF').innerHTML=f;
+if(t==='class'&&editId!==null){const c=classes.find(x=>String(x.id)===String(editId));if(c){['name','subject','period','students'].forEach(k=>{const el=$('mF').querySelector('[name="'+k+'"]');if(el)el.value=c[k]});$('mT').textContent='Editar turma';$('mF').insertAdjacentHTML('beforeend','<div class="full" style="font-size:12px;color:var(--mut)">Reduzir o número de alunos remove os últimos da lista e as notas deles. Renomear atualiza as atividades e os eventos da turma.</div>')}}
+$('mS').textContent='Salvar';$('mb').classList.add('open')}
+function askDeleteClass(id){const c=classes.find(x=>String(x.id)===String(id));if(!c)return;cur='delClass';editId=id;const na=activities.filter(a=>a.className===c.name).length;$('mT').textContent='Excluir turma?';$('mF').innerHTML=`<div class="full">Você vai excluir <strong>${esc(c.name)}</strong>, com ${ensureStudents(c).length} aluno(s), as chamadas e ${na} atividade(s) com as notas. Os eventos da agenda continuam. Essa ação não pode ser desfeita.</div>`;$('mS').textContent='Excluir';$('mb').classList.add('open')}
+function editClass(id,d){const c=classes.find(x=>String(x.id)===String(id));if(!c)return;const old=c.name,n=Math.max(0,Number(d.students)||0);if(d.name!==old){activities.forEach(a=>{if(a.className===old)a.className=d.name});events.forEach(v=>{if(v.className===old)v.className=d.name})}
+const ro=ensureStudents(c);while(ro.length>n)ro.pop();while(ro.length<n)ro.push({id:String(c.id)+'-s'+Date.now()+ro.length,name:'Aluno '+String(ro.length+1).padStart(2,'0')});
+Object.assign(c,{name:d.name,subject:d.subject,period:d.period,students:n});attKeyD='';persist();closeModal();renderAll();toast('Turma atualizada.')}
+function delClass(id){const c=classes.find(x=>String(x.id)===String(id));if(!c)return;const ids=activities.filter(a=>a.className===c.name).map(a=>String(a.id));activities=activities.filter(a=>a.className!==c.name);ids.forEach(k=>delete submissions[k]);Object.keys(attendance).forEach(k=>{if(k.split('|')[0]===String(c.id))delete attendance[k]});delete students[c.id];classes=classes.filter(x=>x!==c);attKeyD='';persist();closeModal();renderAll();toast('Turma excluída.')}
+const closeModal=()=>$('mb').classList.remove('open');
+function saveRec(e){e.preventDefault();const d=Object.fromEntries(new FormData(e.target));if(cur==='delClass'){delClass(editId);return}if(cur==='class'&&editId!==null){editClass(editId,d);return}if(cur==='event')events.push({id:Date.now(),...d});if(cur==='class')classes.push({id:Date.now(),...d,students:Number(d.students)});if(cur==='activity')activities.push({id:Date.now(),...d,points:Number(d.points)});persist();closeModal();renderAll();toast('Registro salvo.')}
+/* backup */
+function exportBackup(){try{const data=JSON.stringify(appPayload(),null,2);const blob=new Blob([data],{type:'application/json;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='diario-docente-backup.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Backup baixado.')}catch(e){toast('Não foi possível exportar o backup.')}}
+function importBackup(ev){const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.classes))throw 0;classes=d.classes;events=Array.isArray(d.events)?d.events:[];activities=Array.isArray(d.activities)?d.activities:[];attendance=d.attendance&&typeof d.attendance==='object'?d.attendance:{};students=d.students||students;submissions=d.submissions||{};reminders=d.reminders||[];attKeyD='';persist();renderAll();toast('Backup importado.')}catch(x){toast('Arquivo de backup inválido.')}};r.readAsText(f);ev.target.value=''}
+
+/* Entregas individuais, notas flexíveis, lembretes e sincronização opcional */
+function ensureStudents(c){if(!students[c.id])students[c.id]=Array.from({length:Number(c.students)||0},(_,i)=>({id:String(c.id)+'-'+(i+1),name:'Aluno '+String(i+1).padStart(2,'0')}));return students[c.id]}
+function selectedActivity(){return activities.find(a=>String(a.id)===$('subActivity').value)}
+const LVS=[['Pendente',null,'#8a8aa3'],['Não entregue',0,'#ef5a5f'],['Iniciada',25,'#f59a3c'],['Parcial',50,'#e2ac2c'],['Quase completa',75,'#4f94f8'],['Completa',100,'#22b865']];
+const OLD={'Entregue no prazo':'Completa','Entregue atrasado':'Quase completa','Não entregou':'Não entregue'};
+const lvNorm=n=>OLD[n]||(LVS.some(l=>l[0]===n)?n:'Pendente');
+const lvInfo=n=>LVS.find(l=>l[0]===lvNorm(n));
+const pctColor=p=>p>=88?'#22b865':p>=63?'#4f94f8':p>=38?'#e2ac2c':p>=13?'#f59a3c':'#ef5a5f';
+const fm=n=>(Math.round(n*100)/100).toLocaleString('pt-BR');
+function lvSelect(s,r){const n=lvNorm(r.status),i=lvInfo(n);return `<select class="status-select lv" style="--lc:${i[2]}" aria-label="Nível de conclusão de ${esc(s.name)}" data-student="${esc(s.id)}" data-field="status">${LVS.map(l=>`<option value="${l[0]}" ${l[0]===n?'selected':''}>${l[0]}${l[1]!==null?' ('+l[1]+'%)':''}</option>`).join('')}</select>`}
+function actStats(a){const c=classes.find(x=>x.name===a.className),ro=c?ensureStudents(c):[],rec=submissions[String(a.id)]||{};let sum=0;ro.forEach(st=>{sum+=lvInfo((rec[st.id]||{}).status)[1]||0});return ro.length?Math.round(sum/ro.length):0}
+function renderNotas(){const el=$('nt'),prev=$('ntClass')?$('ntClass').value:'';const c0=classes.find(c=>String(c.id)===prev)||classes[0];
+if(!c0){el.innerHTML='<div class="empty">Cadastre uma turma.</div>';return}
+const acts=activities.filter(a=>a.className===c0.name),ro=ensureStudents(c0),max=acts.reduce((t,a)=>t+(Number(a.points)||0),0);
+const tot=ro.map(st=>acts.reduce((t,a)=>t+(Number(((submissions[String(a.id)]||{})[st.id]||{}).grade)||0),0)),avg=ro.length?tot.reduce((a,b)=>a+b,0)/ro.length:0;
+el.innerHTML=`<div class="bar"><select id="ntClass" onchange="renderNotas()">${classes.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('')}</select><span class="chip" style="--lc:${pctColor(max?avg/max*100:0)}">Média da turma: ${fm(avg)} / ${fm(max)}</span></div>`+(acts.length?`<div class="tw"><table><thead><tr><th>ALUNO</th>${acts.map(a=>`<th>${esc(a.title)}<br>(${fm(Number(a.points)||0)} pts)</th>`).join('')}<th>TOTAL</th></tr></thead><tbody>${ro.map((st,i)=>`<tr><td><strong>${esc(st.name)}</strong></td>${acts.map(a=>{const r=(submissions[String(a.id)]||{})[st.id]||{},n=lvNorm(r.status),l=lvInfo(n);return`<td><span class="chip" style="--lc:${l[2]}" title="${n}">${r.grade!==''&&r.grade!==undefined?fm(Number(r.grade)):'—'}</span></td>`}).join('')}<td><span class="chip" style="--lc:${pctColor(max?tot[i]/max*100:0)}">${fm(tot[i])} / ${fm(max)}</span></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Esta turma ainda não tem atividades.</div>')+'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">'+LVS.map(l=>`<span class="chip" style="--lc:${l[2]}">${l[0]}${l[1]!==null?' '+l[1]+'%':''}</span>`).join('')+'</div>';
+$('ntClass').value=String(c0.id)}
+function seedDemoSubs(){let fresh=true;try{fresh=!localStorage.getItem('diarioDocenteDemo')}catch(e){}if(!fresh||Object.keys(submissions).length)return;activities.forEach(a=>{const c=classes.find(x=>x.name===a.className);if(!c)return;const rec=submissions[String(a.id)]={};ensureStudents(c).forEach((st,i)=>{const l=LVS[1+((i*3+Number(a.id))%5)];rec[st.id]={status:l[0],grade:String(Math.round((Number(a.points)||0)*l[1])/100),note:''}})})}
+function renderSubmissions(){
+ const cs=$('subClass'),as=$('subActivity'),prevC=cs.value,prevA=as.value;
+ cs.innerHTML=classes.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+ if(classes.some(c=>String(c.id)===prevC))cs.value=prevC;
+ const c=classes.find(x=>String(x.id)===cs.value);
+ const acts=activities.filter(a=>!c||a.className===c.name);
+ as.innerHTML=acts.map(a=>`<option value="${esc(a.id)}">${esc(a.title)} · ${esc(a.unit||'Sem unidade')}</option>`).join('');
+ if(acts.some(a=>String(a.id)===prevA))as.value=prevA;
+ const act=selectedActivity();
+ if(!c||!act){$('subRows').innerHTML='<tr><td colspan="4" class="empty">Cadastre uma turma e uma atividade vinculada a ela para registrar entregas.</td></tr>';$('subSummary').innerHTML='';return}
+ const roster=ensureStudents(c),key=String(act.id),rec=submissions[key]||(submissions[key]={});
+ const query=($('subSearch').value||'').toLowerCase();
+ $('subRows').innerHTML=roster.filter(s=>s.name.toLowerCase().includes(query)).map(s=>{
+ const r=rec[s.id]||{status:'Pendente',grade:'',note:''};
+ return `<tr><td><strong>${esc(s.name)}</strong><small>${esc(s.id)}</small></td><td>${lvSelect(s,r)}</td><td><input class="grade-input" type="number" min="0" max="${Number(act.points)||100}" step="0.25" placeholder="máx. ${Number(act.points)||100}" value="${esc(r.grade??'')}" data-student="${esc(s.id)}" data-field="grade" aria-label="Nota de ${esc(s.name)}"></td><td><input class="grade-input" type="text" placeholder="Observação" value="${esc(r.note||'')}" data-student="${esc(s.id)}" data-field="note" aria-label="Observação de ${esc(s.name)}"></td></tr>`
+ }).join('')||'<tr><td colspan="4" class="empty">Nenhum aluno encontrado.</td></tr>';
+ const vals=roster.map(s=>rec[s.id]).filter(Boolean),submitted=vals.filter(v=>['Entregue no prazo','Entregue atrasado','Parcial'].includes(v.status)).length,graded=vals.filter(v=>v.grade!==''&&v.grade!=null).length;
+ $('subSummary').innerHTML=`<div class="g3"><div class="cc"><small>Alunos na turma</small><strong>${roster.length}</strong></div><div class="cc"><small>Entregaram (inclui parcial/atraso)</small><strong>${submitted}</strong></div><div class="cc"><small>Notas registradas</small><strong>${graded}</strong></div></div><p style="color:var(--mut)">Valor da atividade: ${Number(act.points)||0} pontos. As notas aceitam valores decimais e são limitadas ao valor da atividade.</p>`;
+}
+function saveSubmissions(src){
+ const c=classes.find(x=>String(x.id)===$('subClass').value),act=selectedActivity();if(!c||!act)return;
+ const key=String(act.id);submissions[key]=submissions[key]||{};
+ document.querySelectorAll('#subRows [data-student][data-field]').forEach(el=>{
+  const id=el.dataset.student,field=el.dataset.field;submissions[key][id]=submissions[key][id]||{status:'Pendente',grade:'',note:''};
+  let v=el.value;if(field==='grade'&&v!==''&&Number(v)>Number(act.points)){v=String(Number(act.points));el.value=v}
+  submissions[key][id][field]=v;
+  if(src===el&&field==='status'){const pc=lvInfo(v)[1],g=pc===null?'':String(Math.round((Number(act.points)||0)*pc)/100);submissions[key][id].grade=g;const gi=el.closest('tr').querySelector('[data-field="grade"]');if(gi)gi.value=g}
+ });
+ persist();renderSubmissions();renderActivities();toast('Entregas e notas salvas.');if(cloudClient&&cloudUser)syncCloud();
+}
+$('subRows').addEventListener('change',e=>{if(e.target.matches('[data-field]'))saveSubmissions(e.target)});
+$('subRows').addEventListener('blur',e=>{if(e.target.matches('[data-field]'))saveSubmissions() },true);
+function addStudent(){
+ const c=classes.find(x=>String(x.id)===$('subClass').value);if(!c){toast('Selecione uma turma.');return}
+ const name=prompt('Nome completo do aluno:');if(!name||!name.trim())return;
+ const roster=ensureStudents(c);roster.push({id:String(c.id)+'-s'+Date.now(),name:name.trim()});c.students=roster.length;persist();renderSubmissions();renderClasses();toast('Aluno adicionado à turma.');
+}
+function exportGradesCSV(){
+ const c=classes.find(x=>String(x.id)===$('subClass').value),a=selectedActivity();if(!c||!a){toast('Selecione turma e atividade.');return}
+ const rows=[['Aluno','Atividade','Status da entrega','Nota','Observação'],...ensureStudents(c).map(s=>{const r=(submissions[String(a.id)]||{})[s.id]||{};return[s.name,a.title,r.status||'Pendente',r.grade??'',r.note||'']})];
+ const csv='\ufeff'+rows.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';')).join('\r\n');
+ const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='notas-'+a.title.replace(/[^a-z0-9_-]/gi,'_')+'.csv';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function renderReminders(){
+ const upcoming=events.filter(e=>e.date>=iso(new Date())).sort((a,b)=>a.date.localeCompare(b.date));
+ $('reminderList').innerHTML=upcoming.length?upcoming.map(e=>`<div class="ml"><div><strong>${esc(e.title)}</strong><small>${fmtDate(e.date)} · ${esc(e.time||'sem horário')} · ${esc(e.className||'Pessoal')}</small></div><span class="tag ${e.date===iso(new Date())?'gold':''}">${e.date===iso(new Date())?'Hoje':e.status||'Planejado'}</span></div>`).join(''):'<div class="empty">Nenhum compromisso futuro.</div>';
+}
+async function enableNotifications(){
+ if(!('Notification' in window)){toast('Este navegador não oferece notificações.');return}
+ try{const p=await Notification.requestPermission();toast(p==='granted'?'Notificações ativadas neste navegador.':'Permissão de notificação não concedida.');if(p==='granted')scheduleReminders()}catch(e){toast('Não foi possível ativar notificações.')}
+}
+function scheduleReminders(){
+ renderReminders();if(!('Notification' in window)||Notification.permission!=='granted'){toast('Ative as notificações primeiro.');return}
+ const today=iso(new Date()),soon=events.filter(e=>e.date===today||e.date===shiftDate(1));
+ if(!soon.length){toast('Nenhum prazo hoje ou amanhã.');return}
+ soon.forEach(e=>{try{new Notification('Meu Diário Docente',{body:`${e.title} — ${e.date===today?'hoje':'amanhã'}${e.time?' às '+e.time:''}`})}catch(err){}});
+ toast(`${soon.length} lembrete(s) enviado(s) ao navegador.`);
+}
+function exportCalendar(){
+ const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Meu Diario Docente//PT-BR'];
+ events.forEach(e=>{if(!e.date)return;const d=e.date.replace(/-/g,'');lines.push('BEGIN:VEVENT','UID:'+e.id+'@meudiariodocente','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''),'DTSTART;VALUE=DATE:'+d,'SUMMARY:'+String(e.title||'Compromisso').replace(/([,;\\])/g,'\\$1'),'DESCRIPTION:'+String((e.className||'')+' - '+(e.type||'')).replace(/([,;\\])/g,'\\$1'),'END:VEVENT')});
+ lines.push('END:VCALENDAR');const blob=new Blob([lines.join('\r\n')],{type:'text/calendar;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='agenda-diario-docente.ics';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Arquivo de calendário exportado.');
+}
+function resetDemoData(){if(!confirm('Remover os dados atuais deste navegador e voltar aos exemplos? Faça backup antes.'))return;localStorage.removeItem('diarioDocenteDemo');location.reload()}
+function copySql(){const txt=$('sqlSetup').textContent;navigator.clipboard?.writeText(txt).then(()=>toast('SQL copiado.')).catch(()=>toast('Selecione e copie o SQL manualmente.'))}
+/* Supabase: autenticação e sincronização opcional. Requer URL, chave pública e SQL executado no projeto. */
+function getCloudConfig(){return {url:localStorage.getItem('ddSupabaseUrl')||'',key:localStorage.getItem('ddSupabaseKey')||''}}
+function saveCloudConfig(){
+ const url=$('sbUrl').value.trim(),key=$('sbKey').value.trim();if(!url||!key){toast('Informe a URL e a chave pública.');return}
+ try{new URL(url)}catch(e){toast('A URL do Supabase não é válida.');return}
+ localStorage.setItem('ddSupabaseUrl',url);localStorage.setItem('ddSupabaseKey',key);loadCloudClient(true);
+}
+function cloudMsg(m){const el=$('cloudStatus');if(el)el.textContent=m}
+function loadCloudClient(showMsg=false){
+ const cfg=getCloudConfig();if(!cfg.url||!cfg.key){cloudMsg('Nuvem não configurada. Os dados permanecem neste dispositivo.');return}
+ if(!window.supabase){cloudMsg('Biblioteca Supabase não carregou. Verifique a internet e recarregue a página.');return}
+ cloudClient=window.supabase.createClient(cfg.url,cfg.key);
+ cloudClient.auth.getSession().then(({data})=>{cloudUser=data.session?.user||null;cloudMsg(cloudUser?'Conectado como '+cloudUser.email:'Configuração salva. Entre ou crie sua conta para sincronizar.')});
+}
+async function cloudSignUp(){
+ if(!cloudClient){loadCloudClient();if(!cloudClient)return}
+ const email=$('sbEmail').value.trim(),password=$('sbPassword').value;if(!email||password.length<6){toast('Informe e-mail e senha com pelo menos 6 caracteres.');return}
+ const {error}=await cloudClient.auth.signUp({email,password});cloudMsg(error?'Erro ao criar conta: '+error.message:'Cadastro solicitado. Confira seu e-mail caso a confirmação esteja ativada.');if(!error)toast('Cadastro enviado.');
+}
+async function cloudSignIn(){
+ if(!cloudClient){loadCloudClient();if(!cloudClient)return}
+ const email=$('sbEmail').value.trim(),password=$('sbPassword').value;if(!email||!password){toast('Informe e-mail e senha.');return}
+ const {data,error}=await cloudClient.auth.signInWithPassword({email,password});if(error){cloudMsg('Falha no login: '+error.message);return}
+ cloudUser=data.user;cloudMsg('Conectado como '+(cloudUser.email||'usuário'));await syncCloud();
+}
+async function cloudSignOut(){if(!cloudClient){toast('Nuvem não configurada.');return}const {error}=await cloudClient.auth.signOut();cloudUser=null;cloudMsg(error?'Erro ao sair: '+error.message:'Sessão encerrada.');}
+async function syncCloud(){
+ if(!cloudClient){loadCloudClient();if(!cloudClient)return}
+ const {data:sessionData}=await cloudClient.auth.getSession();cloudUser=sessionData.session?.user||null;
+ if(!cloudUser){cloudMsg('Entre na sua conta antes de sincronizar.');return}
+ cloudMsg('Sincronizando…');
+ const {data,error}=await cloudClient.from('diario_docente_data').select('payload').eq('user_id',cloudUser.id).maybeSingle();
+ if(error){cloudMsg('Erro ao ler nuvem: '+error.message+' (confira se executou o SQL).');return}
+ if(data?.payload){
+  if(confirm('Encontramos dados na nuvem. OK = carregar os dados da nuvem; Cancelar = enviar os dados deste dispositivo.')){
+   const p=data.payload;classes=p.classes||[];events=p.events||[];activities=p.activities||[];attendance=p.attendance||{};students=p.students||{};submissions=p.submissions||{};reminders=p.reminders||[];persist();renderAll();
+  }else{
+   const {error:upErr}=await cloudClient.from('diario_docente_data').upsert({user_id:cloudUser.id,payload:appPayload(),updated_at:new Date().toISOString()},{onConflict:'user_id'});if(upErr){cloudMsg('Erro ao enviar dados: '+upErr.message);return}
+  }
+ }else{
+  const {error:upErr}=await cloudClient.from('diario_docente_data').insert({user_id:cloudUser.id,payload:appPayload(),updated_at:new Date().toISOString()});if(upErr){cloudMsg('Erro ao salvar na nuvem: '+upErr.message);return}
+ }
+ cloudMsg('Sincronização concluída em '+new Date().toLocaleString('pt-BR')+'.');
+}
+try{const cfg=getCloudConfig();if(cfg.url)$('sbUrl').value=cfg.url;if(cfg.key)$('sbKey').value=cfg.key}catch(e){}
+
+/* arrastar entre páginas */
+(function(){const main=document.querySelector('.main');if(!main)return;
+const PAGES=['inicio','agenda','turmas','frequencia','atividades','notas','entregas','lembretes','config'];
+const PN={inicio:'Início',agenda:'Agenda',turmas:'Turmas',frequencia:'Frequência',atividades:'Atividades',notas:'Notas',entregas:'Entregas',lembretes:'Lembretes',config:'Ajustes'};
+const PI={inicio:'home',agenda:'calendar',turmas:'users',frequencia:'check',atividades:'clipboard',notas:'chart',entregas:'filecheck',lembretes:'bell',config:'sliders'};
+const hint=document.createElement('div');hint.id='swHint';hint.innerHTML='<svg class="rg2" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19"/><circle class="pg" cx="22" cy="22" r="19"/></svg><span class="ic2"></span><small></small>';document.body.appendChild(hint);
+const pg=hint.querySelector('.pg'),hi=hint.querySelector('.ic2'),hl=hint.querySelector('small');
+let st=null,swiped=false,shown='',ready=false;
+const cur=()=>PAGES.find(q=>$('p-'+q)&&$('p-'+q).classList.contains('on'));
+function blocked(t){if(document.querySelector('.mb.open')||document.querySelector('#mobileMore.open'))return true;for(let e=t;e&&e!==main;e=e.parentElement){if(e.matches&&e.matches('input,select,textarea,[data-noswipe]'))return true;if(e.scrollWidth>e.clientWidth+8){const o=getComputedStyle(e).overflowX;if(o==='auto'||o==='scroll')return true}}return false}
+function peek(t){document.querySelectorAll('.mobile-nav-btn').forEach(b=>b.classList.toggle('peek',!!t&&b.dataset.p===t))}
+function showHint(t,dir,pr){if(!t){hideHint();return}const p=Math.min(pr,1);if(shown!==t){shown=t;hi.innerHTML=svgI(PI[t]);hl.textContent=PN[t];peek(t)}
+hint.className=dir>0?'r':'l';hint.style.opacity=Math.min(pr*1.5,1);hint.style.transform=`translateX(${(dir>0?1:-1)*(1-p)*34}px) scale(${.7+.3*p+(pr>=1?.08:0)})`;pg.style.strokeDashoffset=119.4*(1-p);
+const r=pr>=1;hint.classList.toggle('ready',r);if(r&&!ready&&navigator.vibrate){try{navigator.vibrate(8)}catch(e){}}ready=r}
+function hideHint(){hint.style.opacity=0;hint.classList.remove('ready');shown='';ready=false;peek(null)}
+document.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'||!e.isPrimary||(e.target.closest&&e.target.closest('.mobile-nav,.mobile-more,.mb'))||blocked(e.target))return;const q=cur();if(!q)return;st={id:e.pointerId,x:e.clientX,y:e.clientY,lock:0,p:q,el:$('p-'+q),dx:0,lastX:e.clientX,lastT:performance.now(),v:0}});
+document.addEventListener('pointermove',e=>{if(!st||e.pointerId!==st.id)return;const dx=e.clientX-st.x,dy=e.clientY-st.y;
+if(!st.lock){if(Math.abs(dx)>10&&Math.abs(dx)>Math.abs(dy)*1.4){st.lock=1;try{main.setPointerCapture(e.pointerId)}catch(_){}st.el.style.transition='none'}else{if(Math.abs(dy)>10)st=null;return}}
+const w=innerWidth,dir=dx<0?1:-1,t=PAGES[PAGES.indexOf(st.p)+dir],now=performance.now();
+st.v=(e.clientX-st.lastX)/Math.max(1,now-st.lastT);st.lastX=e.clientX;st.lastT=now;st.dx=dx;st.tgt=t;st.dir=dir;
+const f=t?dx*.85:dx*.22,k=Math.min(Math.abs(f)/w,1);st.el.style.transform=`translateX(${f}px) scale(${1-k*.04})`;st.el.style.opacity=1-k*.35;showHint(t,dir,Math.abs(dx)/(w*.28))});
+function end(e){if(!st||e.pointerId!==st.id)return;const x=st;st=null;hideHint();if(!x.lock)return;swiped=true;setTimeout(()=>swiped=false,80);
+const w=innerWidth,el=x.el,go1=x.tgt&&(Math.abs(x.dx)>w*.28||(Math.abs(x.v)>.5&&Math.abs(x.dx)>40&&Math.sign(x.v)===Math.sign(x.dx)));
+if(!go1){el.style.transition='transform .4s cubic-bezier(.2,1.3,.3,1),opacity .25s';el.style.transform='';el.style.opacity='';setTimeout(()=>{el.style.transition=''},420);return}
+el.style.transition='transform .17s ease-in,opacity .17s';el.style.transform=`translateX(${x.dir>0?-w*.4:w*.4}px)`;el.style.opacity='0';
+setTimeout(()=>{el.style.transition='';el.style.transform='';el.style.opacity='';const n=$('p-'+x.tgt);n.classList.add('swn');go(x.tgt);n.style.transform=`translateX(${x.dir>0?w*.3:-w*.3}px)`;n.style.opacity='0';n.getBoundingClientRect();n.style.transition='transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s';n.style.transform='';n.style.opacity='';setTimeout(()=>{n.style.transition='';n.classList.remove('swn')},340)},170)}
+document.addEventListener('pointerup',end);document.addEventListener('pointercancel',end);
+document.addEventListener('click',e=>{if(swiped){e.stopPropagation();e.preventDefault()}},true)})();
+applyIcons();seedDemoSubs();loadCloudClient();renderAll();counters();
+</script></body></html>
